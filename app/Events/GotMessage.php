@@ -9,8 +9,9 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
-class GotMessage
+class GotMessage implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -19,7 +20,7 @@ class GotMessage
      */
     public function __construct(public array $message)
     {
-        //
+        Log::info('GotMessage event fired', ['message' => $message]);
     }
 
     /**
@@ -27,10 +28,9 @@ class GotMessage
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn(): array
+    public function broadcastOn()
     {
-        return [
-            new PrivateChannel('channel_for_everyone'),
-        ];
+        Log::info('GotMessage event fired');
+        return new Channel('channel_for_everyone');
     }
 }

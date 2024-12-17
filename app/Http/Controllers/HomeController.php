@@ -26,7 +26,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $user = User::where('id', auth()->id)->select(['id', 'name', 'email'])->first();
+        $user = User::where('id', auth()->id())->select(['id', 'name', 'email'])->first();
         return view('home', ['user' => $user]);
     }
 
@@ -37,7 +37,7 @@ class HomeController extends Controller
 
     public function message(Request $request){
         $message = Message::create([
-            'user_id' => auth()->id,
+            'user_id' => auth()->id(),
             'text' => $request->get('text')
         ]);
         SendMessage::dispatch($message);

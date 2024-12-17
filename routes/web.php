@@ -13,3 +13,14 @@ Route::get('/', function () { return view('welcome'); });
 Route::get('/messages', [HomeController::class, 'messages'])->name('messages');
 
 Route::post('/message', [HomeController::class, 'message'])->name('message');
+
+// use App\Events\GotMessage;
+
+// Route::get('/test-broadcast', function () {
+//     broadcast(new GotMessage([
+//         'id' => 1,
+//         'user' => 'Test User',
+//         'content' => 'Test message'
+//     ]));
+//     return 'Broadcasted!';
+// });
