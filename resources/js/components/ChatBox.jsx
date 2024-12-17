@@ -23,7 +23,6 @@ const ChatBox = ({ rootUrl }) => {
             console.log('Message received:', e);
             getMessages(); // Fetch messages again
         });    
-            
     }
 
     const getMessages = async () => {
