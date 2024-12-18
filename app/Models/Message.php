@@ -6,16 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Message extends Model
 {
-    protected $table = 'messages';
+    protected $table = 'chats';
 
     protected $fillable = [
         'id',
-        'user_id',
+        'sender_id',
+        'receiver_id',
         'text'
     ];
 
     public function user(){
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'sender_id');
     }
 
     public function getTimeAttribute(): string {

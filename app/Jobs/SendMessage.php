@@ -27,7 +27,8 @@ class SendMessage implements ShouldQueue
         GotMessage::dispatch([
             'id' => $this->message->id,
             'text' => $this->message->text,
-            'user_id' => $this->message->user_id,
+            'sender_id' => $this->message->sender_id,
+            'receiver_id' => $this->message->receiver_id,
             'time' => $this->message->time
         ]);
     }

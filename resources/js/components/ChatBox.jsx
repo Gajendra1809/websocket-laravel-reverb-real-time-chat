@@ -2,34 +2,27 @@ import React, { useEffect, useRef, useState } from "react";
 import Message from "./Message.jsx";
 import MessageInput from "./MessageInput.jsx";
 
-const ChatBox = ({ rootUrl }) => {
-    const userData = document.getElementById('main')
-        .getAttribute('data-user');
+const ChatBox = ({ user }) => {
 
-    const user = JSON.parse(userData);
-    // `App.Models.User.${user.id}`;
-    const webSocketChannel = `channel_for_everyone`;
+    const authUser = JSON.parse(document.getElementById('main').getAttribute('data-user'));
 
     const [messages, setMessages] = useState([]);
     const scroll = useRef();
 
-    const scrollToBottom = () => {
-        scroll.current.scrollIntoView({ behavior: "smooth" });
-    };
-
     const connectWebSocket = () => {
-        window.Echo.channel('channel_for_everyone')
+        window.Echo.channel('chat.'+authUser.id)
         .listen('GotMessage', (e) => {
             console.log('Message received:', e);
-            getMessages(); // Fetch messages again
-        });    
+            getMessages();
+        });
     }
 
     const getMessages = async () => {
         try {
-            const m = await axios.get(`${rootUrl}/messages`);
-            setMessages(m.data);
-            setTimeout(scrollToBottom, 0);
+            let response = await fetch('http://127.0.0.1:8000/messages/user/' + user.id);
+            response = await response.json();
+            console.log(response.messages);
+            setMessages(response.messages || []);
         } catch (err) {
             console.log(err.message);
         }
@@ -38,7 +31,6 @@ const ChatBox = ({ rootUrl }) => {
     useEffect(() => {
         getMessages();
         connectWebSocket();
-
         return () => {
             window.Echo.leave(webSocketChannel);
         }
@@ -53,16 +45,13 @@ const ChatBox = ({ rootUrl }) => {
                          style={{height: "500px", overflowY: "auto"}}>
                         {
                             messages?.map((message) => (
-                                <Message key={message.id}
-                                         userId={user.id}
-                                         message={message}
-                                />
+                                <Message key={message.id} userId={user.id} message={message} />
                             ))
                         }
                         <span ref={scroll}></span>
                     </div>
                     <div className="card-footer">
-                        <MessageInput rootUrl={rootUrl} />
+                        <MessageInput user={user} />
                     </div>
                 </div>
             </div>

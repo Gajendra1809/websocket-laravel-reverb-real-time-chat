@@ -1,13 +1,20 @@
 import React, { useState } from "react";
 
-const MessageInput = ({ rootUrl }) => {
+const MessageInput = ({ user }) => {
     const [message, setMessage] = useState("");
 
     const messageRequest = async (text) => {
         try {
-            await axios.post(`${rootUrl}/message`, {
-                text,
-            });
+            let response = await fetch('http://127.0.0.1:8000/message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    text: text,
+                    receiver_id: user.id
+                }),
+            })
         } catch (err) {
             console.log(err.message);
         }
@@ -19,7 +26,6 @@ const MessageInput = ({ rootUrl }) => {
             alert("Please enter a message!");
             return;
         }
-
         messageRequest(message);
         setMessage("");
     };

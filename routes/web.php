@@ -10,9 +10,11 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('/', function () { return view('welcome'); });
 
-Route::get('/messages', [HomeController::class, 'messages'])->name('messages');
+Route::get('/messages/user/{rid}', [HomeController::class, 'messages'])->name('messages');
 
 Route::post('/message', [HomeController::class, 'message'])->name('message');
+
+Route::get('/users', [HomeController::class, 'users'])->name('users');
 
 // use App\Events\GotMessage;
 

@@ -2,7 +2,7 @@ import React from "react";
 
 const Message = ({ userId, message }) => {
     return (
-        <div className={`row ${userId === message.user_id ? "justify-content-end" : ""
+        <div className={`row ${userId !== message.sender_id ? "justify-content-end" : ""
             }`}>
             <div className="col-md-6">
                 <small className="text-muted">
@@ -11,7 +11,7 @@ const Message = ({ userId, message }) => {
                 <small className="text-muted float-right">
                     {message.time}
                 </small>
-                <div className={`alert alert-${userId === message.user_id ? "primary" : "secondary"
+                <div className={`alert alert-${userId !== message.sender_id ? "primary" : "secondary"
                     }`} role="alert">
                     {message.text}
                 </div>

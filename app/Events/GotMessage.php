@@ -30,7 +30,10 @@ class GotMessage implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        Log::info('GotMessage event fired');
-        return new Channel('channel_for_everyone');
+        Log::info('GotMessage event fired on channel chat.'.$this->message['receiver_id']);
+        return [
+            new Channel('chat.'.$this->message['receiver_id']),
+            new Channel('chat.'.$this->message['sender_id']),
+        ];
     }
 }
